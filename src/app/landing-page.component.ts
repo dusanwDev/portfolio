@@ -37,10 +37,10 @@ function randomLeft(): number {
         <ng-container *ngFor="let bin of binaries(); let i = index">
           <span [class]="'bg-binary'" [style.top]="bin.top + '%'" [style.left]="bin.left + '%'">{{ bin.value }}</span>
         </ng-container>
-        <div [class]="'bg-square'" [style.top]="'10%'" [style.left]="'20%'"></div>
-        <div [class]="'bg-square'" [style.top]="'25%'" [style.left]="'75%'"></div>
-        <div [class]="'bg-square'" [style.top]="'60%'" [style.left]="'15%'"></div>
-        <div [class]="'bg-square'" [style.top]="'65%'" [style.left]="'60%'"></div>
+        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'10%'" [style.left]="'20%'"></div>
+        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'25%'" [style.left]="'75%'"></div>
+        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'60%'" [style.left]="'15%'"></div>
+        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'65%'" [style.left]="'60%'"></div>
       </div>
       <h1 [class]="'hero-title'">
         <span [class]="'gradient-text'">Dusan Nikolic</span>
@@ -136,9 +136,16 @@ function randomLeft(): number {
       height: 90px;
       border: 2px solid #00c6ff;
       border-radius: 12px;
-      opacity: 0.06;
+      opacity: 0.13;
       z-index: 1;
       pointer-events: none;
+      box-shadow: none;
+      transition: border-color 0.4s, opacity 0.4s;
+    }
+    .bg-square.square-glow-on {
+      border-color: #00eaff;
+      opacity: 0.32;
+      box-shadow: none;
     }
     .landing-hero {
       display: flex;
@@ -288,6 +295,7 @@ export class LandingPageComponent {
   readonly subtitleDone = signal(false); // New signal to track if typing is done
   private readonly cursorBlink = signal(true);
   readonly showCursor = signal(true); // Always show cursor, let the typing effect control its blinking/visibility
+  squareGlow = signal(true);
 
   constructor() {
     // Police light effect
@@ -357,6 +365,14 @@ export class LandingPageComponent {
         clearInterval(typingInt);
         clearInterval(cursorInterval);
       };
+    });
+
+    // Neon square glow blink effect
+    effect(() => {
+      const interval = setInterval(() => {
+        this.squareGlow.update(v => !v);
+      }, 1800);
+      return () => clearInterval(interval);
     });
   }
 }
