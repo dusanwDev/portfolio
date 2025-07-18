@@ -54,7 +54,6 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
       align-items: center;
       justify-content: space-between;
       padding: 0.5rem 2rem;
-      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
     }
     .header-left {
       display: flex;

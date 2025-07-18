@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/core';
 
 interface FallingBinary {
@@ -27,7 +27,7 @@ function randomLeft(): number {
     'class': 'landing-hero-container',
     'role': 'main',
   },
-  imports: [NgFor],
+  imports: [NgFor, NgIf],
   template: `
     <section [class]="'landing-hero'">
       <div [class]="'bg-decor'">
@@ -46,7 +46,8 @@ function randomLeft(): number {
         <span [class]="'gradient-text'">Dusan Nikolic</span>
       </h1>
       <h2 [class]="'hero-subtitle'">
-        <span [class]="'subtitle-arrow'">&gt;</span> FRONTEND SPECIALIST
+        <span [class]="'subtitle-arrow'">&gt;</span>
+        <span>{{ subtitleTyped() }}<span *ngIf="showCursor()" [class]="'typing-cursor'">|</span></span>
       </h2>
       <p [class]="'hero-tagline'">
         Crafting digital experiences with cutting-edge technology.<br />
@@ -120,14 +121,14 @@ function randomLeft(): number {
       position: absolute;
       color: #00c6ff;
       font-size: 1.1rem;
-      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
-      opacity: 0.13;
+      opacity: 0.16;
       letter-spacing: 0.08em;
       z-index: 1;
       user-select: none;
       pointer-events: none;
       white-space: nowrap;
       transition: opacity 0.3s;
+      text-shadow: 0 0 8px #00c6ff, 0 0 2px #fff;
     }
     .bg-square {
       position: absolute;
@@ -185,7 +186,6 @@ function randomLeft(): number {
     .hero-tagline {
       font-size: 1.3rem;
       color: #b0b8c1;
-      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
       margin: 0;
       margin-bottom: 0.5rem;
       line-height: 1.5;
@@ -212,7 +212,7 @@ function randomLeft(): number {
       border-radius: 12px;
       border: none;
       outline: none;
-      cursor: none;
+      cursor: pointer; /* Changed from 'none' for better UX */
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       font-family: inherit;
     }
@@ -238,6 +238,20 @@ function randomLeft(): number {
       font-size: 1.3em;
       vertical-align: middle;
     }
+    .typing-cursor {
+      display: inline-block;
+      width: 1ch;
+      color: #00c6ff;
+      animation: blink 1s steps(1) infinite;
+      font-weight: 700;
+      font-size: 1em;
+      vertical-align: middle;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    /* Removed typewriter keyframes as they are not used with the current typing logic */
     @media (max-width: 700px) {
       .hero-title {
         font-size: 2.3rem;
@@ -268,13 +282,28 @@ export class LandingPageComponent {
   );
   readonly binaries = this._binaries.asReadonly();
 
+  readonly subtitleFull = ' FRONTEND DEVELOPER';
+  private readonly subtitleIndex = signal(0);
+  readonly subtitleTyped = () => this.subtitleFull.slice(0, this.subtitleIndex());
+  readonly subtitleDone = signal(false); // New signal to track if typing is done
+  private readonly cursorBlink = signal(true);
+  readonly showCursor = signal(true); // Always show cursor, let the typing effect control its blinking/visibility
+
   constructor() {
+    // Police light effect
     effect(() => {
-      const interval = setInterval(() => {
+      const policeInterval = setInterval(() => {
         this.blueActive.update(v => !v);
+      }, 2500);
+      return () => clearInterval(policeInterval);
+    });
+
+    // Binary animation
+    effect(() => {
+      const binaryInterval = setInterval(() => {
         this._binaries.update(arr =>
           arr.map(bin => {
-            let newTop = bin.top + 1.2 + Math.random() * 0.8;
+            let newTop = bin.top + 0.4 + Math.random() * 0.8;
             let newValue = randomBinaryString(bin.value.length);
             if (newTop > 100) {
               // Reset to top with new left and value
@@ -288,7 +317,46 @@ export class LandingPageComponent {
           })
         );
       }, 60);
-      return () => clearInterval(interval);
+      return () => clearInterval(binaryInterval);
+    });
+
+    // Typing animation for subtitle and cursor control
+    effect(() => {
+      if (this.subtitleDone()) {
+        // If typing is done, stop showing the cursor
+        this.showCursor.set(false);
+        return;
+      }
+
+      const typingInt = setInterval(() => {
+        if (this.subtitleIndex() < this.subtitleFull.length) {
+          this.subtitleIndex.update(i => i + 1);
+        } else {
+          clearInterval(typingInt);
+          this.subtitleDone.set(true); // Mark typing as done
+          // Keep the cursor blinking for a short period after typing is done
+          setTimeout(() => {
+            this.showCursor.set(false); // Hide cursor after a delay
+          }, 1500); // Adjust delay as needed
+        }
+      }, 120); // Adjusted typing speed for smoother animation (was 320ms)
+
+      const cursorInterval = setInterval(() => {
+        if (!this.subtitleDone()) {
+          this.cursorBlink.update(v => !v);
+        } else {
+          // Once typing is done, we let the setTimeout above handle hiding the cursor,
+          // so this interval can stop blinking and remain visible until hidden.
+          this.cursorBlink.set(true); // Ensure cursor is visible before hiding
+          clearInterval(cursorInterval);
+        }
+      }, 500);
+
+      // Return cleanup function for the effect
+      return () => {
+        clearInterval(typingInt);
+        clearInterval(cursorInterval);
+      };
     });
   }
-} 
+}
