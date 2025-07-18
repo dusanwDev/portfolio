@@ -1,4 +1,24 @@
+import { NgFor } from '@angular/common';
 import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/core';
+
+interface FallingBinary {
+  top: number; // percent
+  left: number; // percent
+  value: string;
+}
+
+function randomBinaryString(length: number): string {
+  let s = '';
+  for (let i = 0; i < length; i++) {
+    s += Math.random() > 0.5 ? '1' : '0';
+  }
+  return s;
+}
+
+function randomLeft(): number {
+  // Avoid edges
+  return 5 + Math.random() * 85;
+}
 
 @Component({
   selector: 'app-landing-page',
@@ -7,17 +27,16 @@ import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/cor
     'class': 'landing-hero-container',
     'role': 'main',
   },
+  imports: [NgFor],
   template: `
     <section [class]="'landing-hero'">
       <div [class]="'bg-decor'">
         <div [class]="'bg-glow bg-glow-blue'" [style.opacity]="blueActive() ? 0.35 : 0.08"></div>
         <div [class]="'bg-glow bg-glow-purple'" [style.opacity]="blueActive() ? 0.08 : 0.35"></div>
         <div [class]="'bg-vertical-line'"></div>
-        <span [class]="'bg-binary'" [style.top]="'12%'" [style.left]="'8%'">11110111111001101110</span>
-        <span [class]="'bg-binary'" [style.top]="'18%'" [style.left]="'56%'">01011010100010110010</span>
-        <span [class]="'bg-binary'" [style.top]="'30%'" [style.left]="'80%'">1101110000010110100</span>
-        <span [class]="'bg-binary'" [style.top]="'60%'" [style.left]="'12%'">100101110110001100</span>
-        <span [class]="'bg-binary'" [style.top]="'70%'" [style.left]="'70%'">011111110101100100</span>
+        <ng-container *ngFor="let bin of binaries(); let i = index">
+          <span [class]="'bg-binary'" [style.top]="bin.top + '%'" [style.left]="bin.left + '%'">{{ bin.value }}</span>
+        </ng-container>
         <div [class]="'bg-square'" [style.top]="'10%'" [style.left]="'20%'"></div>
         <div [class]="'bg-square'" [style.top]="'25%'" [style.left]="'75%'"></div>
         <div [class]="'bg-square'" [style.top]="'60%'" [style.left]="'15%'"></div>
@@ -107,6 +126,8 @@ import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/cor
       z-index: 1;
       user-select: none;
       pointer-events: none;
+      white-space: nowrap;
+      transition: opacity 0.3s;
     }
     .bg-square {
       position: absolute;
@@ -237,11 +258,36 @@ import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/cor
 export class LandingPageComponent {
   blueActive = signal(true);
 
+  // 5 animated binaries
+  private readonly _binaries = signal<FallingBinary[]>(
+    Array.from({ length: 5 }, () => ({
+      top: Math.random() * 100,
+      left: randomLeft(),
+      value: randomBinaryString(20 + Math.floor(Math.random() * 10)),
+    }))
+  );
+  readonly binaries = this._binaries.asReadonly();
+
   constructor() {
     effect(() => {
       const interval = setInterval(() => {
         this.blueActive.update(v => !v);
-      }, 2500);
+        this._binaries.update(arr =>
+          arr.map(bin => {
+            let newTop = bin.top + 1.2 + Math.random() * 0.8;
+            let newValue = randomBinaryString(bin.value.length);
+            if (newTop > 100) {
+              // Reset to top with new left and value
+              return {
+                top: -10,
+                left: randomLeft(),
+                value: randomBinaryString(20 + Math.floor(Math.random() * 10)),
+              };
+            }
+            return { ...bin, top: newTop, value: newValue };
+          })
+        );
+      }, 60);
       return () => clearInterval(interval);
     });
   }
