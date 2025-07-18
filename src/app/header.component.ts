@@ -1,0 +1,200 @@
+import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@angular/core';
+
+@Component({
+  selector: 'app-header',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    'class': 'header-container',
+    'role': 'banner',
+  },
+  template: `
+    <header [class]="'header'">
+      <nav [class]="'header-nav'" aria-label="Main navigation">
+        <ul [class]="'nav-list'">
+          <li [class]="'nav-item'">
+            <a [class]="'nav-link nav-link-active'">HOME</a>
+          </li>
+          <li [class]="'nav-item'">
+            <a [class]="'nav-link'"><span aria-hidden="true">👤</span> ABOUT</a>
+          </li>
+          <li [class]="'nav-item'">
+            <a [class]="'nav-link'"><span aria-hidden="true">&lt;/&gt;</span> SKILLS</a>
+          </li>
+          <li [class]="'nav-item'">
+            <a [class]="'nav-link'"><span aria-hidden="true">🎁</span> PROJECTS</a>
+          </li>
+          <li [class]="'nav-item'">
+            <a [class]="'nav-link'"><span aria-hidden="true">💬</span> CONTACT</a>
+          </li>
+        </ul>
+      </nav>
+      <div [class]="'header-status'">
+        <span [class]="'status-dot'" aria-label="Online"></span>
+        <span [class]="'status-text'">ONLINE</span>
+        <span [class]="'status-sep'">|</span>
+        <span [class]="'status-label'">STATUS:</span>
+        <span [class]="'status-ready'">READY</span>
+      </div>
+    </header>
+  `,
+  styles: [`
+    .header-container {
+      width: 100%;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+    .header {
+      width: 100%;
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 2rem;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-bg {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #00c6ff 0%, #ff00cc 100%);
+      box-shadow: 0 0 16px 0 rgba(0,0,0,0.2);
+    }
+    .logo-icon {
+      font-size: 1.8rem;
+      color: #fff;
+      user-select: none;
+    }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      line-height: 1.1;
+    }
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: linear-gradient(90deg, #00c6ff 0%, #ff00cc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    .brand-time {
+      font-size: 0.9rem;
+      color: #b0b8c1;
+      margin-top: 0.1rem;
+      font-family: inherit;
+    }
+    .header-nav {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+    }
+    .nav-list {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+    }
+    .nav-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 10px;
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      
+    }
+    .nav-link-active {
+      background: linear-gradient(90deg, #00c6ff 0%, #ff00cc 100%);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
+    }
+    .nav-link:not(.nav-link-active):hover {
+      background: rgba(255,255,255,0.08);
+      color: #00c6ff;
+    }
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      font-family: inherit;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1ecb7a;
+      display: inline-block;
+      margin-right: 0.2rem;
+    }
+    .status-text {
+      color: #b0b8c1;
+      font-weight: 500;
+      margin-right: 0.5rem;
+    }
+    .status-sep {
+      color: #444a56;
+      margin: 0 0.5rem;
+    }
+    .status-label {
+      color: #b0b8c1;
+      font-weight: 500;
+    }
+    .status-ready {
+      color: #00c6ff;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .header {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 0.5rem;
+      }
+      .header-nav {
+        margin: 0.5rem 0;
+      }
+    }
+  `]
+})
+export class HeaderComponent {
+  private readonly now = signal(new Date());
+
+  readonly time = computed(() => {
+    const d = this.now();
+    return d.toLocaleTimeString([], { hour12: false });
+  });
+
+  constructor() {
+    effect(() => {
+      const interval = setInterval(() => {
+        this.now.set(new Date());
+      }, 1000);
+      return () => clearInterval(interval);
+    });
+  }
+} 
