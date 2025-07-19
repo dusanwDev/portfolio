@@ -1,0 +1,330 @@
+import { NgFor, NgIf } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
+interface Project {
+  title: string;
+  description: string;
+  image: string;
+  badge: string;
+  badgeType: 'LIVE' | 'ERP' | 'FRONTEND' | 'BACKEND';
+  tech: string[];
+  codeUrl?: string;
+  liveUrl?: string;
+}
+
+@Component({
+  selector: 'app-projects',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    'class': 'projects-container',
+    'role': 'region',
+    'aria-label': 'Projects Section',
+  },
+  imports: [NgFor, NgIf],
+  template: `
+    <section [class]="'projects-section'">
+      <div [class]="'projects-label'">
+        <span [class]="'projects-label-text'">All Projects</span>
+      </div>
+      <div [class]="'projects-grid'">
+        <div *ngFor="let project of projects" [class]="'project-card'">
+          <div [class]="'project-image-wrap'">
+            <img [src]="project.image" [alt]="project.title + ' preview'" [class]="'project-image'" />
+          </div>
+          <div [class]="'project-badges'">
+            <span [class]="'project-badge'" [class]="'project-badge-' + project.badgeType.toLowerCase()">{{ project.badge }}</span>
+            <span *ngIf="project.badgeType !== 'LIVE'" [class]="'project-badge-type'">{{ project.badgeType }}</span>
+          </div>
+          <div [class]="'project-title'">{{ project.title }}</div>
+          <div [class]="'project-desc'">{{ project.description }}</div>
+          <div [class]="'project-tech'">
+            <span *ngFor="let t of project.tech" [class]="'project-tech-item'">{{ t }}</span>
+          </div>
+          <div [class]="'project-actions'">
+            <a *ngIf="project.codeUrl" [href]="project.codeUrl" target="_blank" rel="noopener" [class]="'project-btn project-btn-code'">
+              <i [class]="'pi pi-github'"></i> Code
+            </a>
+            <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" rel="noopener" [class]="'project-btn project-btn-live'">
+              <i [class]="'pi pi-external-link'"></i> Live Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  `,
+  styles: [`
+    .projects-container {
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 0 4rem 0;
+      min-height: 60vh;
+
+
+    }
+    .projects-section {
+
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      background-color: #000000;
+    }
+    .projects-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 2.2rem;
+      color: #00eaff;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+      width: 100vw;
+    }
+    .projects-label-arrow {
+      color: #00eaff;
+      font-size: 2.2rem;
+      font-weight: 900;
+    }
+    .projects-label-text {
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+    .projects-grid {
+      width: 100%;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      align-items: stretch;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .project-card {
+      background: #10131a;
+      border: 1.5px solid #22242a;
+      border-radius: 18px;
+      box-shadow: 0 2px 24px 0 rgba(0,0,0,0.18);
+      padding: 2.2rem 2.2rem 1.7rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 435px;
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      transition: border 0.2s, box-shadow 0.2s;
+      margin: 0 auto;
+    }
+    .project-card:hover {
+      border: 1.5px solid #00eaff;
+      box-shadow: 0 4px 32px 0 #00eaff22;
+    }
+    .project-image-wrap {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .project-image {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #181b22;
+      border: 1.5px solid #23272f;
+      box-shadow: 0 2px 12px 0 #00eaff11;
+    }
+    .project-badges {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 0.7rem;
+    }
+    .project-badge {
+      font-size: 1.02rem;
+      font-family: inherit;
+      font-weight: 700;
+      padding: 0.18em 1.1em;
+      border-radius: 16px;
+      background: #1ecb7a;
+      color: #fff;
+      letter-spacing: 0.04em;
+      margin-right: 0.5rem;
+      display: inline-block;
+      box-shadow: 0 2px 8px 0 #1ecb7a22;
+    }
+    .project-badge-live {
+      background: #1ecb7a;
+      color: #fff;
+    }
+    .project-badge-erp {
+      background: #23272f;
+      color: #b0b8c1;
+    }
+    .project-badge-frontend {
+      background: #23272f;
+      color: #00eaff;
+    }
+    .project-badge-backend {
+      background: #23272f;
+      color: #ff4ecd;
+    }
+    .project-badge-type {
+      font-size: 1.02rem;
+      font-family: inherit;
+      font-weight: 700;
+      color: #b0b8c1;
+      letter-spacing: 0.04em;
+      margin-left: auto;
+      opacity: 0.7;
+      background: none;
+      border-radius: 0;
+      padding: 0;
+    }
+    .project-title {
+      font-size: 1.55rem;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      margin-top: 0.2rem;
+      letter-spacing: 0.01em;
+      text-align: left;
+    }
+    .project-desc {
+      font-size: 1.08rem;
+      color: #b0b8c1;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
+      margin-bottom: 1.1rem;
+      line-height: 1.5;
+      min-height: 60px;
+      text-align: left;
+    }
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+      margin-top: 0.2rem;
+    }
+    .project-tech-item {
+      font-size: 1.02rem;
+      color: #00eaff;
+      background: #181b22;
+      border-radius: 12px;
+      padding: 0.13em 1.1em;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      opacity: 0.85;
+      box-shadow: 0 1px 4px 0 #00eaff11;
+    }
+    .project-actions {
+      display: flex;
+      gap: 1.1rem;
+      margin-top: 1.5rem;
+      align-items: center;
+    }
+    .project-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.13rem;
+      font-family: inherit;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      padding: 0.7em 1.6em;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .project-btn-code {
+      background: #181b22;
+      color: #00eaff;
+      border: 1.5px solid #00eaff;
+    }
+    .project-btn-code:hover {
+      background: #00eaff;
+      color: #181b22;
+    }
+    .project-btn-live {
+      background: linear-gradient(90deg, #00eaff 0%, #a259ff 100%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 12px 0 #00eaff22;
+    }
+    .project-btn-live:hover {
+      background: linear-gradient(90deg, #00eaff 0%, #ff4ecd 100%);
+      color: #fff;
+    }
+    .pi {
+      font-size: 1.2em;
+      vertical-align: middle;
+    }
+    @media (max-width: 900px) {
+      .projects-section {
+        max-width: 100vw;
+        padding: 0 0.5rem;
+      }
+      .projects-grid {
+        gap: 1.2rem;
+      }
+      .project-card {
+        padding: 1.2rem 0.7rem 1rem 0.7rem;
+        min-height: 340px;
+        max-width: 100%;
+      }
+      .project-title {
+        font-size: 1.1rem;
+      }
+      .project-desc {
+        font-size: 0.95rem;
+      }
+    }
+  `]
+})
+export class ProjectsComponent {
+  projects: Project[] = [
+    {
+      title: 'Gospel Admin System',
+      description: 'Comprehensive church management system with member tracking, event scheduling, financial management and attendance monitoring.',
+      image: 'https://dummyimage.com/600x200/222/fff&text=Gospel+Admin+System',
+      badge: 'LIVE',
+      badgeType: 'ERP',
+      tech: ['React JS', 'MySQL', 'HTML/CSS', '+2'],
+      codeUrl: '#',
+      liveUrl: '#',
+    },
+    {
+      title: 'GreenTech Solutions',
+      description: 'A modern web platform showcasing sustainable technology solutions, environmental services, and green innovation initiatives.',
+      image: 'https://dummyimage.com/600x200/def/222&text=GreenTech+Solutions',
+      badge: 'LIVE',
+      badgeType: 'FRONTEND',
+      tech: ['HTML', 'HTML/CSS', 'JS'],
+      codeUrl: '#',
+      liveUrl: '#',
+    },
+    {
+      title: 'M-Pesa PHP SDK',
+      description: 'A comprehensive PHP SDK for integrating Safaricom\'s M-Pesa payment services, including STK Push, B2B, B2C, and more.',
+      image: 'https://dummyimage.com/600x200/222/fff&text=M-Pesa+PHP+SDK',
+      badge: 'LIVE',
+      badgeType: 'BACKEND',
+      tech: ['PHP', 'REST API', 'Composer', '+1'],
+      codeUrl: '#',
+      liveUrl: '#',
+    },
+  ];
+} 

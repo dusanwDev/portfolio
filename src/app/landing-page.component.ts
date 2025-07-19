@@ -1,5 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/core';
+import { AboutMeComponent } from './about-me.component';
 
 interface FallingBinary {
   top: number; // percent
@@ -37,10 +38,9 @@ function randomLeft(): number {
         <ng-container *ngFor="let bin of binaries(); let i = index">
           <span [class]="'bg-binary'" [style.top]="bin.top + '%'" [style.left]="bin.left + '%'">{{ bin.value }}</span>
         </ng-container>
-        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'10%'" [style.left]="'20%'"></div>
-        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'25%'" [style.left]="'75%'"></div>
-        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'60%'" [style.left]="'15%'"></div>
-        <div [class]="'bg-square'" [class.square-glow-on]="squareGlow()" [style.top]="'65%'" [style.left]="'60%'"></div>
+        <ng-container *ngFor="let sq of squares; let i = index">
+          <div [class]="'bg-square'" [class.square-glow-on]="squareGlows[i]()" [style.top]="sq.top" [style.left]="sq.left"></div>
+        </ng-container>
       </div>
       <h1 [class]="'hero-title'">
         <span [class]="'gradient-text'">Dusan Nikolic</span>
@@ -71,7 +71,6 @@ function randomLeft(): number {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #000;
       position: relative;
       overflow: hidden;
       padding-top: 2rem;
@@ -134,9 +133,9 @@ function randomLeft(): number {
       position: absolute;
       width: 90px;
       height: 90px;
-      border: 2px solid #00c6ff;
+      border: 1px solid #00c6ff;
       border-radius: 12px;
-      opacity: 0.13;
+      opacity: 0.2;
       z-index: 1;
       pointer-events: none;
       box-shadow: none;
@@ -144,7 +143,7 @@ function randomLeft(): number {
     }
     .bg-square.square-glow-on {
       border-color: #00eaff;
-      opacity: 0.32;
+      opacity: 0.4;
       box-shadow: none;
     }
     .landing-hero {
@@ -157,7 +156,7 @@ function randomLeft(): number {
       height: 100vh;
       text-align: center;
       z-index: 2;
-      background-color: black;
+      background-color:#111111;
     }
     .hero-title {
       font-size: 4rem;
@@ -297,6 +296,13 @@ export class LandingPageComponent {
   readonly showCursor = signal(true); // Always show cursor, let the typing effect control its blinking/visibility
   squareGlow = signal(true);
 
+  squares = [
+    { top: '10%', left: '20%' },
+    { top: '25%', left: '75%' },
+    { top: '60%', left: '15%' },
+  ];
+  squareGlows = this.squares.map(() => signal(true));
+
   constructor() {
     // Police light effect
     effect(() => {
@@ -367,12 +373,14 @@ export class LandingPageComponent {
       };
     });
 
-    // Neon square glow blink effect
-    effect(() => {
-      const interval = setInterval(() => {
-        this.squareGlow.update(v => !v);
-      }, 1800);
-      return () => clearInterval(interval);
+    // Neon square glow blink effect (independent for each square)
+    this.squareGlows.forEach((glow, i) => {
+      effect(() => {
+        const interval = setInterval(() => {
+          glow.update(v => !v);
+        }, 1200 + Math.random() * 1200); // Each square blinks at a different interval
+        return () => clearInterval(interval);
+      });
     });
   }
 }
