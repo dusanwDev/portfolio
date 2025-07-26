@@ -5,5 +5,11 @@
   padding: 0px;
   cursor: none;
   font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
-
+  
+}
+body {
+  background-color: #000000;
+}
+.experience-container,.contact-container,.skills-container,.projects-section,.about-me-section {
+  margin-top: 2rem;
 }

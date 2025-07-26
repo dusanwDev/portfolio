@@ -126,7 +126,7 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3rem;
+      gap: 1rem;
       z-index: 1;
       background-color: #000000;
     }

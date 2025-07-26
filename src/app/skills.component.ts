@@ -49,13 +49,14 @@ interface Skill {
       align-items: center;
       position: relative;
       overflow: hidden;
+
     }
     .skills-container {
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3rem;
+      gap: 1rem;
       background-color: #000;
       padding: 1.0625rem 0rem;
     }

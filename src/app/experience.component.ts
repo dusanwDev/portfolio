@@ -28,7 +28,7 @@ interface ExperienceItem {
               <div class="company-logo">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="60px" height="60px" viewBox="0 0 200 200 " preserveAspectRatio="xMidYMid meet" class="__web-inspector-hide-shortcut__">
 
-<g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)" fill="#ba86ff" stroke="none">
+<g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)" fill="#00eaff" stroke="none">
 <path d="M730 1977 c-51 -27 -90 -90 -90 -145 0 -57 36 -119 86 -148 l44 -26 0 -306 0 -307 105 -134 105 -134 0 -369 c0 -236 4 -376 10 -389 14 -25 46 -25 60 0 6 13 10 156 10 398 l0 378 -110 140 -110 140 0 291 0 291 47 24 c54 28 93 90 93 149 0 87 -83 170 -170 170 -20 0 -56 -10 -80 -23z m150 -82 c38 -39 35 -98 -9 -137 -28 -25 -39 -29 -69 -24 -52 8 -87 47 -87 95 0 89 101 130 165 66z"/>
 <path d="M1132 1539 c-127 -63 -120 -259 11 -308 l27 -11 0 -598 c0 -452 3 -601 12 -610 20 -20 48 -14 58 14 6 15 10 254 10 609 l0 585 39 19 c123 63 115 244 -13 302 -54 24 -91 24 -144 -2z m114 -64 c40 -16 68 -70 58 -110 -8 -32 -59 -75 -89 -75 -58 0 -105 47 -105 104 0 30 43 83 73 89 12 2 23 5 25 6 1 0 18 -6 38 -14z"/>
 <path d="M260 1418 c-52 -36 -73 -71 -78 -132 -5 -65 20 -118 74 -155 37 -25 105 -33 155 -18 25 8 36 -3 208 -213 l181 -222 0 -327 c0 -241 3 -330 12 -339 18 -18 46 -14 58 7 6 13 10 141 10 349 l0 330 -195 237 c-139 169 -194 243 -189 254 32 75 27 139 -16 193 -46 59 -159 77 -220 36z m144 -69 c38 -30 49 -64 36 -105 -15 -43 -45 -64 -93 -64 -47 0 -97 44 -97 85 0 32 24 81 47 94 30 17 79 12 107 -10z"/>
@@ -70,37 +70,34 @@ interface ExperienceItem {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3rem;
+      gap: 1rem;
+
     }
     .experience-title {
       font-size: 2.5rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
       text-align: center;
       margin: 0;
       position: relative;
+      color: #00eaff;
     }
 
     .experience-content {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 3rem;
+      gap: 1rem;
       max-width: 1300px;    max-width: 1300px;
     }
     .experience-item {
       background: rgba(0, 0, 0, 0.3);
-      border: 1px solid #8b5cf6;
+      border: 1.5px solid #00eaff;
       border-radius: 12px;
       padding: 2rem;
       transition: all 0.3s ease;
     }
     .experience-item:hover {
-      border-color: #a855f7;
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+      box-shadow: 0 4px 32px 0 #00eaff22;
     }
     .company-header {
       display: flex;

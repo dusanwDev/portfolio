@@ -66,9 +66,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     }
     .about-title {
       font-size: 3.2rem;
-      font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
       font-weight: 900;
-      margin: 0 0 2.2rem 0;
       letter-spacing: 0.04em;
       display: flex;
       align-items: center;

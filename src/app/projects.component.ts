@@ -24,10 +24,14 @@ interface Project {
   template: `
     <section [class]="'projects-section'">
       <div [class]="'projects-label'">
-        <span [class]="'projects-label-text'">All Projects</span>
+        <h2>All Projects</h2>
       </div>
       <div [class]="'projects-grid'">
-        <div *ngFor="let project of projects" [class]="'project-card'">
+        <div 
+          *ngFor="let project of projects; let i = index" 
+          [class]="'project-card project-card-' + (i === 0 ? 'left' : i === 1 ? 'middle' : 'right')"
+          [style.animation-delay]="(i * 200) + 'ms'"
+        >
           <div [class]="'project-image-wrap'">
             <img [src]="project.image" [alt]="project.title + ' preview'" [class]="'project-image'" />
           </div>
@@ -64,6 +68,10 @@ interface Project {
 
 
     }
+    .projects-label h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
     .projects-section {
 
       width: 100%;
@@ -78,9 +86,8 @@ interface Project {
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      font-size: 2.2rem;
       color: #00eaff;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1rem;
       letter-spacing: 0.08em;
       font-weight: 900;
       width: 100vw;
@@ -90,12 +97,7 @@ interface Project {
       font-size: 2.2rem;
       font-weight: 900;
     }
-    .projects-label-text {
-      color: #fff;
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-    }
+
     .projects-grid {
       width: 100%;
       display: grid;
@@ -120,6 +122,17 @@ interface Project {
       position: relative;
       transition: border 0.2s, box-shadow 0.2s;
       margin: 0 auto;
+      opacity: 0;
+      animation: projectCardAppear 0.8s ease-out forwards;
+    }
+    .project-card-left {
+      animation: projectCardSlideFromLeft 0.8s ease-out forwards;
+    }
+    .project-card-middle {
+      animation: projectCardSlideFromTop 0.8s ease-out forwards;
+    }
+    .project-card-right {
+      animation: projectCardSlideFromRight 0.8s ease-out forwards;
     }
     .project-card:hover {
       border: 1.5px solid #00eaff;
@@ -290,6 +303,44 @@ interface Project {
       }
       .project-desc {
         font-size: 0.95rem;
+      }
+    }
+    @keyframes projectCardSlideFromLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-100px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes projectCardSlideFromTop {
+      0% {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes projectCardSlideFromRight {
+      0% {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes projectCardAppear {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
       }
     }
   `]
