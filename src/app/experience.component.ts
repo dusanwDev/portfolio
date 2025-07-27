@@ -181,10 +181,10 @@ interface ExperienceItem {
 export class ExperienceComponent {
   experienceItems: ExperienceItem[] = [
     {
-      company: 'Company',
+      company: 'Edeja Software',
       logo: 'assets/technology-icon-converted.svg',
       position: 'Frontend Developer',
-      duration: '2023 - Present',
+      duration: '2021 - Present',
       description: [
         'Developed responsive web applications using Angular and React frameworks',
         'Collaborated with cross-functional teams to deliver high-quality software solutions',

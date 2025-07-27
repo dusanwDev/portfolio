@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 interface Skill {
   name: string;
-  icon: string;
-  color: string;
+  iconPath: string;
   delay: number;
 }
 
@@ -24,14 +23,10 @@ interface Skill {
         @for (skill of visibleSkills(); track skill.name; let i = $index) {
           <div 
             class="skill-card" 
-            [class.skill-glow-on]="skillGlows[i]()"
             [style.animation-delay]="skill.delay + 'ms'"
-            [style.--skill-color]="skill.color"
           >
-            <div 
-              class="skill-icon" 
-            >
-              <i [class]="skill.icon"></i>
+            <div class="skill-icon">
+              <img [src]="skill.iconPath" [alt]="skill.name + ' icon'" class="skill-svg" loading="lazy" />
             </div>
             <span class="skill-name">{{ skill.name }}</span>
           </div>
@@ -49,7 +44,6 @@ interface Skill {
       align-items: center;
       position: relative;
       overflow: hidden;
-
     }
     .skills-container {
       width: 100%;
@@ -71,7 +65,6 @@ interface Skill {
       margin: 0;
       position: relative;
     }
-
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -95,46 +88,25 @@ interface Skill {
       transform: translateY(30px);
       transition: border-color 0.4s, opacity 0.4s, transform 0.3s ease;
     }
-    .skill-card.skill-glow-on {
-      border-color: #a855f7;
-    }
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(139, 92, 246, 0.1),
-        transparent
-      );
-      transition: left 0.5s ease;
-    }
-    .skill-card:hover {
-      transform: translateY(-5px);
-    }
-    .skill-card:hover::before {
-      left: 100%;
-    }
+
     .skill-icon {
-      font-size: 2.5rem;
-      color: var(--skill-color, #8b5cf6);
+      width: 120px;
+      height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid #8b5cf6;
-      opacity: 0.2;
+      opacity: 1;
+      transition: border-color 0.4s, opacity 0.4s;
     }
+    .skill-svg {
+      width: 120px;
+      height: 120px;
+      display: block;
+    }
+
     .skill-card:hover .skill-icon {
       border-color: #a855f7;
-      opacity: 0.4;
+      opacity: 1;
     }
     .skill-name {
       font-size: 0.9rem;
@@ -172,9 +144,16 @@ interface Skill {
         padding: 1.2rem 0.8rem;
       }
       .skill-icon {
-        font-size: 2rem;
-        width: 50px;
-        height: 50px;
+        width: 80px;
+        height: 80px;
+      }
+      .skill-svg {
+        width: 80px;
+        height: 80px;
+      }
+      .skill-card:nth-child(8) .skill-svg {
+        width: 120px;
+        height: 120px;
       }
       .skill-name {
         font-size: 0.8rem;
@@ -189,9 +168,16 @@ interface Skill {
         padding: 1rem 0.5rem;
       }
       .skill-icon {
-        font-size: 1.8rem;
-        width: 45px;
-        height: 45px;
+        width: 48px;
+        height: 48px;
+      }
+      .skill-svg {
+        width: 48px;
+        height: 48px;
+      }
+      .skill-card:nth-child(8) .skill-svg {
+        width: 64px;
+        height: 64px;
       }
       .skill-name {
         font-size: 0.75rem;
@@ -201,16 +187,16 @@ interface Skill {
 })
 export class SkillsComponent {
   private readonly skills: Skill[] = [
-    { name: 'Angular', icon: 'pi pi-angular', color: '#ba86ff', delay: 0 },
-    { name: 'React', icon: 'pi pi-react', color: '#ba86ff', delay: 100 },
-    { name: 'NextJS', icon: 'pi pi-code', color: '#ba86ff', delay: 200 },
-    { name: 'TypeScript', icon: 'pi pi-code', color: '#ba86ff', delay: 300 },
-    { name: 'JavaScript', icon: 'pi pi-code', color: '#ba86ff', delay: 400 },
-    { name: 'HTML', icon: 'pi pi-code', color: '#ba86ff', delay: 500 },
-    { name: 'CSS', icon: 'pi pi-code', color: '#ba86ff', delay: 600 },
-    { name: 'SASS', icon: 'pi pi-code', color: '#ba86ff', delay: 700 },
-    { name: 'Bootstrap', icon: 'pi pi-code', color: '#ba86ff', delay: 800 },
-    { name: 'Docker', icon: 'pi pi-code', color: '#ba86ff', delay: 900 }
+    { name: 'Angular', iconPath: 'assets/icons/angular.svg', delay: 0 },
+    { name: 'React', iconPath: 'assets/icons/react.svg', delay: 100 },
+    { name: 'NextJS', iconPath: 'assets/icons/nextjs.svg', delay: 200 },
+    { name: 'TypeScript', iconPath: 'assets/icons/typescript.svg', delay: 300 },
+    { name: 'JavaScript', iconPath: 'assets/icons/javascript.svg', delay: 400 },
+    { name: 'HTML', iconPath: 'assets/icons/html.svg', delay: 500 },
+    { name: 'CSS', iconPath: 'assets/icons/css.svg', delay: 600 },
+    { name: 'SASS', iconPath: 'assets/icons/sass.svg', delay: 700 },
+    { name: 'Bootstrap', iconPath: 'assets/icons/bootstrap.svg', delay: 800 },
+    { name: 'Docker', iconPath: 'assets/icons/docker.svg', delay: 900 }
   ];
 
   private readonly visibleCount = signal(0);
@@ -218,7 +204,6 @@ export class SkillsComponent {
     this.skills.slice(0, this.visibleCount())
   );
 
-  // Create glow signals for each skill
   skillGlows = this.skills.map(() => signal(true));
 
   constructor() {
@@ -234,12 +219,11 @@ export class SkillsComponent {
       return () => clearInterval(interval);
     });
 
-    // Neon skill glow blink effect (independent for each skill)
     this.skillGlows.forEach((glow, i) => {
       effect(() => {
         const interval = setInterval(() => {
           glow.update(v => !v);
-        }, 1200 + Math.random() * 1200); // Each skill blinks at a different interval
+        }, 1200 + Math.random() * 1200);
         return () => clearInterval(interval);
       });
     });

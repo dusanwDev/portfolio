@@ -55,10 +55,10 @@ function randomLeft(): number {
       </p>
       <div [class]="'hero-actions'">
         <button [class]="'hero-btn hero-btn-primary'" type="button">
-          <i [class]="'pi pi-eye'" aria-hidden="true"></i> VIEW PROJECTS
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><polygon points="6 3 20 12 6 21 6 3"/></svg> VIEW PROJECTS
         </button>
         <button [class]="'hero-btn hero-btn-outline'" type="button">
-          <i [class]="'pi pi-download'" aria-hidden="true"></i> DOWNLOAD CV
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> DOWNLOAD CV
         </button>
       </div>
     </section>
@@ -224,12 +224,12 @@ function randomLeft(): number {
     }
     .hero-btn-primary {
       background: linear-gradient(90deg, #00c6ff 0%, #3a8dde 100%);
-      color: #fff;
+      color: black;
       box-shadow: 0 2px 16px 0 rgba(0,198,255,0.12);
     }
     .hero-btn-primary:hover {
-      background: linear-gradient(90deg, #00c6ff 0%, #ff00cc 100%);
-      color: #fff;
+      scale: 1.05;
+      transition: scale 0.3s ease;
     }
     .hero-btn-outline {
       background: transparent;
@@ -237,8 +237,11 @@ function randomLeft(): number {
       border: 2px solid #00c6ff;
     }
     .hero-btn-outline:hover {
-      background: #00c6ff;
+      background:rgb(0, 198, 255, 0.3);
+      
       color: #fff;
+      scale: 1.05;
+      transition: scale 0.3s ease, background 0.3s ease, color 0.3s ease;
     }
     .pi {
       font-size: 1.3em;

@@ -12,7 +12,8 @@ import { ContactComponent } from './contact.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HttpClientModule, HeaderComponent, CustomCursorComponent, LandingPageComponent, AboutMeComponent, ProjectsComponent, SkillsComponent, ExperienceComponent, ContactComponent],
+  imports: [RouterOutlet, HttpClientModule, HeaderComponent, CustomCursorComponent, LandingPageComponent, AboutMeComponent, ProjectsComponent, SkillsComponent, ExperienceComponent, ContactComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

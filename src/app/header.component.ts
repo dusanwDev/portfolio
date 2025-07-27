@@ -15,16 +15,16 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
             <a [class]="'nav-link nav-link-active'">HOME</a>
           </li>
           <li [class]="'nav-item'">
-            <a [class]="'nav-link'"><span aria-hidden="true">👤</span> ABOUT</a>
+            <a [class]="'nav-link'"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>  </span> ABOUT</a>
           </li>
           <li [class]="'nav-item'">
             <a [class]="'nav-link'"><span aria-hidden="true">&lt;/&gt;</span> SKILLS</a>
           </li>
           <li [class]="'nav-item'">
-            <a [class]="'nav-link'"><span aria-hidden="true">🎁</span> PROJECTS</a>
+            <a [class]="'nav-link'"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase-icon lucide-briefcase"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg> PROJECTS</a>
           </li>
           <li [class]="'nav-item'">
-            <a [class]="'nav-link'"><span aria-hidden="true">💬</span> CONTACT</a>
+            <a [class]="'nav-link'"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-icon lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> CONTACT</a>
           </li>
         </ul>
       </nav>
@@ -117,14 +117,18 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
       color: #fff;
       text-decoration: none;
       font-size: 0.875rem;
-      font-weight: 500;
+      font-weight: 700;
       padding: 0.5rem 1.2rem;
       border-radius: 10px;
       transition: background 0.2s, color 0.2s;
       position: relative;
       display: flex;
       align-items: center;
-      
+      gap: 0.5rem;
+    }
+    .nav-link i {
+      font-size: 1.2rem;
+      color: inherit;
     }
     .nav-link-active {
       background: linear-gradient(90deg, #00c6ff 0%, #ff00cc 100%);
@@ -150,8 +154,24 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
       background: #1ecb7a;
       display: inline-block;
       margin-right: 0.2rem;
+      animation: statusPulse 1.2s infinite cubic-bezier(0.4, 0, 0.6, 1);
     }
-    .status-text {
+    @keyframes statusPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(30, 203, 122, 0.7);
+        transform: scale(1);
+      }
+      70% {
+        box-shadow: 0 0 0 8px rgba(30, 203, 122, 0);
+        transform: scale(1.25);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(30, 203, 122, 0);
+        transform: scale(1);
+      }
+    }
+    .status-text {  
+      font-size: 12px;
       color: #b0b8c1;
       font-weight: 500;
       margin-right: 0.5rem;
@@ -163,10 +183,12 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
     .status-label {
       color: #b0b8c1;
       font-weight: 500;
+      font-size: 12px;
     }
     .status-ready {
       color: #00c6ff;
       font-weight: 700;
+      font-size: 12px;
     }
     @media (max-width: 900px) {
       .header {

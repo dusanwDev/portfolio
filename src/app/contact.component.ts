@@ -20,11 +20,11 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
         <div class="contact-card">
           <div class="card-header">
             <div class="header-left">
-              <i class="pi pi-comments header-icon"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-icon lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               <h3 class="card-title">Send Message</h3>
             </div>
             <div class="online-status">
-              <i class="pi pi-wifi status-icon"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wifi-icon lucide-wifi"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>
               <span class="status-text">ONLINE</span>
             </div>
           </div>
@@ -82,7 +82,7 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
               class="send-button"
               [disabled]="isSubmitting() || !contactForm.form.valid"
             >
-              <i [class]="isSubmitting() ? 'pi pi-spin pi-spinner' : 'pi pi-send'"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-icon lucide-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
               {{ isSubmitting() ? 'SENDING...' : 'SEND MESSAGE' }}
             </button>
           </form>
@@ -187,9 +187,6 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid #22c55e;
-      border-radius: 20px;
       padding: 0.3rem 0.8rem;
     }
     .status-icon {
