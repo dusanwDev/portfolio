@@ -263,11 +263,16 @@ interface Project {
     .project-btn-code {
       background: #181b22;
       color: white;
-      border: 1.5px solid white;
+      outlline-color: white;
     }
     .project-btn-code:hover {
-      background: #00eaff;
-      color: #181b22;
+      outline: 1px solid #20D3EE;
+      color: #20D3EE;
+      transition: outline 1s, color 0.5s, stroke 0.5s;
+
+      svg {
+        stroke: #20D3EE;
+      }
     }
     .project-btn-live {
       background-image: linear-gradient(to right, rgb(6 182 212 / 0.2), rgb(168 85 247 / 0.2));
@@ -275,6 +280,10 @@ interface Project {
       border: none;
       box-shadow: 0 2px 12px 0 #00eaff22;
       
+    }
+    .project-btn-live:hover {
+      scale: 1.1;
+      transition: scale 0.5s;
     }
 
     .pi {
