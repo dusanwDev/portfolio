@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface ExperienceItem {
@@ -19,7 +19,7 @@ interface ExperienceItem {
   },
   imports: [CommonModule],
   template: `
-    <div class="experience-container">
+    <div [class]="'experience-container' + (inView() ? ' in-view' : '')" #experienceSection>
       <h2 class="experience-title">Experience</h2>
       <div class="experience-content">
         @for (exp of experienceItems; track exp.company) {
@@ -71,7 +71,13 @@ interface ExperienceItem {
       flex-direction: column;
       align-items: center;
       gap: 1rem;
-
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.6,1), transform 0.7s cubic-bezier(0.4,0,0.6,1);
+    }
+    .experience-container.in-view {
+      opacity: 1;
+      transform: none;
     }
     .experience-title {
       font-size: 2.5rem;
@@ -197,5 +203,23 @@ export class ExperienceComponent {
 
   constructor() {
     // Component logic will go here
+  }
+  inView = signal(false);
+  @ViewChild('experienceSection', { static: true }) sectionRef!: ElementRef<HTMLElement>;
+
+  ngAfterViewInit(): void {
+    if (this.sectionRef) {
+      const observer = new window.IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          // Only trigger if user has scrolled at least 50px
+          if (entry.isIntersecting && window.scrollY > 400) {
+            console.log('[ExperienceComponent] Experience section is in view! Adding .in-view class.');
+            this.inView.set(true);
+            observer.disconnect(); // Only trigger once
+          }
+        });
+      }, { threshold: 0.4 });
+      observer.observe(this.sectionRef.nativeElement);
+    }
   }
 } 

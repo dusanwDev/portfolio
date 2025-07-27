@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 
 interface Project {
   title: string;
@@ -22,14 +22,14 @@ interface Project {
   },
   imports: [NgFor, NgIf],
   template: `
-    <section [class]="'projects-section'">
+    <section [class]="'projects-section'" #projectsSection>
       <div [class]="'projects-label'">
         <h2>All Projects</h2>
       </div>
       <div [class]="'projects-grid'">
         <div 
           *ngFor="let project of projects; let i = index" 
-          [class]="'project-card project-card-' + (i === 0 ? 'left' : i === 1 ? 'middle' : 'right')"
+          [class]="'project-card' + (inView() ? ' project-card-' + (i === 0 ? 'left' : i === 1 ? 'middle' : 'right') : '')"
           [style.animation-delay]="(i * 200) + 'ms'"
         >
           <div [class]="'project-image-wrap'">
@@ -121,7 +121,13 @@ interface Project {
       transition: border 0.2s, box-shadow 0.2s;
       margin: 0 auto;
       opacity: 0;
-      animation: projectCardAppear 0.8s ease-out forwards;
+      pointer-events: none;
+      /* Remove animation here */
+    }
+    /* Only animate when .in-view is present */
+    .in-view .project-card {
+      opacity: 1;
+      pointer-events: auto;
     }
     .project-card-left {
       animation: projectCardSlideFromLeft 0.8s ease-out forwards;
@@ -350,7 +356,7 @@ interface Project {
     }
   `]
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements AfterViewInit {
   projects: Project[] = [
     {
       title: 'Gospel Admin System',
@@ -383,4 +389,23 @@ export class ProjectsComponent {
       liveUrl: '#',
     },
   ];
+
+  inView = signal(false);
+  @ViewChild('projectsSection', { static: true }) sectionRef!: ElementRef<HTMLElement>;
+
+  ngAfterViewInit(): void {
+    if (this.sectionRef) {
+      const observer = new window.IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          // Only trigger if user has scrolled at least 50px
+          if (entry.isIntersecting && window.scrollY > 50) {
+            console.log('[ProjectsComponent] Projects section is in view! Adding .in-view class.');
+            this.inView.set(true);
+            observer.disconnect(); // Only trigger once
+          }
+        });
+      }, { threshold: 0.4 });
+      observer.observe(this.sectionRef.nativeElement);
+    }
+  }
 } 

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, computed, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, effect, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Skill {
@@ -17,12 +17,12 @@ interface Skill {
   },
   imports: [CommonModule],
   template: `
-    <div class="skills-container">
+    <div class="skills-container" #skillSesction>
       <h2 class="skills-title">Skills & Technologies</h2>
       <div class="skills-grid">
         @for (skill of visibleSkills(); track skill.name; let i = $index) {
           <div 
-            class="skill-card" 
+            [class]="'skill-card' + (inView() ? ' in-view' : '')" 
             [style.animation-delay]="skill.delay + 'ms'"
           >
             <div class="skill-icon">
@@ -73,6 +73,9 @@ interface Skill {
       max-width: 1300px;
     }
     .skill-card {
+      display: none;
+    }
+    .skill-card.in-view {
       background: #000000;
       border: 2px solid var(--skill-color, #8b5cf6);
       border-radius: 12px;
@@ -83,10 +86,11 @@ interface Skill {
       gap: 0.8rem;
       position: relative;
       overflow: hidden;
-      animation: skillAppear 0.6s ease-out forwards;
       opacity: 0;
       transform: translateY(30px);
       transition: border-color 0.4s, opacity 0.4s, transform 0.3s ease;
+
+      animation: skillAppear 0.6s ease-out forwards;
     }
 
     .skill-icon {
@@ -205,6 +209,8 @@ export class SkillsComponent {
   );
 
   skillGlows = this.skills.map(() => signal(true));
+  inView = signal(false);
+  @ViewChild('skillSesction', { static: true }) sectionRef!: ElementRef<HTMLElement>;
 
   constructor() {
     effect(() => {
@@ -227,5 +233,22 @@ export class SkillsComponent {
         return () => clearInterval(interval);
       });
     });
+  }
+  ngAfterViewInit(): void {
+    if (this.sectionRef) {
+      const observer = new window.IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          // Only trigger if user has scrolled at least 50px
+          if (entry.isIntersecting && window.scrollY > 50) {
+            console.log('[SkillsComponent] Skills section is in view! Adding .in-view class.');
+            console.log('[ProjectsComponent] Projects section is in view! Adding .in-view class.');
+            this.inView.set(true);
+            console.log(this.inView());
+            observer.disconnect(); // Only trigger once
+          }
+        });
+      }, { threshold: 0.4 });
+      observer.observe(this.sectionRef.nativeElement);
+    }
   }
 } 

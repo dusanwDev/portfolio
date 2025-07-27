@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-about-me',
@@ -9,7 +9,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     'aria-label': 'About Me Section',
   },
   template: `
-    <section [class]="'about-me-section'">
+    <section [class]="'about-me-section' + (inView() ? ' in-view' : '')" #aboutSection>
       <h2 [class]="'about-title'">
         <span [class]="'about-title-bracket'">&lt;</span>
         <span [class]="'about-title-gradient'">ABOUT_ME</span>
@@ -42,6 +42,13 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       align-items: center;
       justify-content: center;
       text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.6,1), transform 0.7s cubic-bezier(0.4,0,0.6,1);
+    }
+    .about-me-section.in-view {
+      opacity: 1;
+      transform: none;
     }
     .about-label {
       display: flex;
@@ -122,4 +129,21 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     }
   `]
 })
-export class AboutMeComponent {} 
+export class AboutMeComponent implements AfterViewInit {
+  inView = signal(false);
+  @ViewChild('aboutSection', { static: true }) sectionRef!: ElementRef<HTMLElement>;
+
+  ngAfterViewInit(): void {
+    if (this.sectionRef) {
+      const observer = new window.IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && window.scrollY > 50) {
+            this.inView.set(true);
+            observer.disconnect(); // Only trigger once
+          }
+        });
+      }, { threshold: 0.4 });
+      observer.observe(this.sectionRef.nativeElement);
+    }
+  }
+} 

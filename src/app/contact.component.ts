@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService, ContactMessage } from './services/supabase.service';
@@ -13,7 +13,7 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
   },
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="contact-container">
+    <div [class]="'contact-container' + (inView() ? ' in-view' : '')" #contactSection >
       <h2 class="contact-title">Get In Touch</h2>
       <div class="contact-grid">
         <!-- Send Message Form -->
@@ -129,6 +129,13 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
       gap: 1rem;
       z-index: 1;
       background-color: #000000;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.6,1), transform 0.7s cubic-bezier(0.4,0,0.6,1);
+    }
+    .contact-container.in-view {
+      opacity: 1;
+      transform: none;
     }
     .contact-title {
       font-size: 2.5rem;
@@ -399,5 +406,23 @@ export class ContactComponent {
         this.isSubmitting.set(false);
       }
     });
+  }
+  inView = signal(false);
+  @ViewChild('contactSection', { static: true }) sectionRef!: ElementRef<HTMLElement>;
+
+  ngAfterViewInit(): void {
+    if (this.sectionRef) {
+      const observer = new window.IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          // Only trigger if user has scrolled at least 50px
+          if (entry.isIntersecting && window.scrollY > 400) {
+            console.log('[ExperienceComponent] Experience section is in view! Adding .in-view class.');
+            this.inView.set(true);
+            observer.disconnect(); // Only trigger once
+          }
+        });
+      }, { threshold: 0.4 });
+      observer.observe(this.sectionRef.nativeElement);
+    }
   }
 } 
