@@ -166,20 +166,69 @@ interface ExperienceItem {
       color: #8b5cf6;
       font-weight: bold;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .experience-section {
-        padding: 3rem 1rem;
+        padding: 2rem 0.5rem;
       }
       .experience-title {
         font-size: 2rem;
+      }
+      .experience-content {
+        max-width: 100%;
+        gap: 0.7rem;
+      }
+      .experience-item {
+        padding: 1.2rem;
       }
       .company-header {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .company-logo {
+        width: 48px;
+        height: 48px;
+      }
+      .company-name {
+        font-size: 1.1rem;
+      }
+      .position {
+        font-size: 0.95rem;
+      }
+      .duration {
+        font-size: 0.8rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .experience-section {
+        padding: 1rem 0.2rem;
+      }
+      .experience-title {
+        font-size: 1.3rem;
       }
       .experience-item {
-        padding: 1.5rem;
+        padding: 0.7rem;
+      }
+      .company-logo {
+        width: 36px;
+        height: 36px;
+      }
+      .company-header {
+        gap: 0.5rem;
+      }
+      .company-name {
+        font-size: 0.9rem;
+      }
+      .position {
+        font-size: 0.8rem;
+      }
+      .duration {
+        font-size: 0.7rem;
+      }
+      .bullet-points li {
+        font-size: 0.85rem;
+        padding-left: 1rem;
       }
     }
   `]
@@ -192,11 +241,18 @@ export class ExperienceComponent {
       position: 'Frontend Developer',
       duration: '2021 - Present',
       description: [
-        'Developed responsive web applications using Angular and React frameworks',
-        'Collaborated with cross-functional teams to deliver high-quality software solutions',
-        'Implemented modern UI/UX designs with focus on accessibility and performance',
-        'Optimized application performance and improved user experience',
-        'Mentored junior developers and conducted code reviews'
+        'Rewrote Angular application into modern React by implementing core React architecture principles',
+        'Refactored and optimized the entire frontend codebase to address long-standing technical debt, reducing build time, improving SEO performance, and enhancing code readability and maintainability',
+        'Introduced Dockerization and implemented a CI/CD pipeline, significantly improving deployment speed',
+        'Onboarded new team members coming from non-JS background and performed code reviews, knowledge transfer and pair programming sessions',
+        'Implemented a white-labeling architecture, enabling the product to be customized and deployed for multiple clients with minimal code duplication',
+        'Adjusted the entire codebase to adhere to WCAG standards',
+        'Supported manual QA testers in writing Cypress tests, leading to increased test coverage and reduced risk of production bugs',
+        'Ensured cross browser compatibility and optimize application speed and performance',
+        'Performed Angular version upgrades from v4 to the latest stable releases, ensuring improved performance, security, and maintainability',
+        'Managed multiple priorities while simultaneously contributing to several Angular projects, ensuring timely delivery and consistent code quality',
+        'Created and maintained a library of reusable UI components, reducing redundant development and improving consistency across the application',
+        'Collaborated with the backend team to refactor the authentication flow, migrating from token-based to secure cookie-based login using Keycloak',
       ]
     }
   ];

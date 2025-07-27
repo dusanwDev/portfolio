@@ -16,9 +16,8 @@ import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef, Afte
         <span [class]="'about-title-bracket'">/&gt;</span>
       </h2>
       <p [class]="'about-desc'">
-        My name is Martin Wainaina, a Full-Stack Developer passionate about building comprehensive digital solutions with 6+ years of experience<br />
-        building scalable <span [class]="'about-highlight-cyan'">web applications</span>, <span [class]="'about-highlight-purple'">mobile apps</span>, and <span [class]="'about-highlight-pink'">ERP systems</span>.<br />
-        Specialized in React, PHP, and React Native, delivering high-performance solutions that drive business growth and enhance user experiences.
+        "My name is Dusan Nikolic, a Frontend Developer passionate about building comprehensive web solutions with over <span [class]="'about-highlight-cyan'">4 years of experience</span> building scalable web applications. 
+        Specialized in <span [class]="'about-highlight-purple'">React, Angular, and a little bit of NextJS</span>, delivering high-performance solutions that drive business growth and enhance user experiences."
       </p>
     </section>
   `,

@@ -52,7 +52,7 @@ interface Skill {
       align-items: center;
       gap: 1rem;
       background-color: #000;
-      padding: 1.0625rem 0rem;
+      padding: 1.0625rem 0 0 0;
     }
     .skills-title {
       font-size: 2.5rem;
