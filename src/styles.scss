@@ -12,6 +12,9 @@ body {
   overflow-x: hidden;
 
 }
+html {
+  scroll-behavior: smooth;
+}
 .experience-container,.contact-container,.skills-container,.projects-section,.about-me-section {
   margin-top: 2rem;
 }

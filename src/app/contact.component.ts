@@ -13,7 +13,7 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
   },
   imports: [CommonModule, FormsModule],
   template: `
-    <div [class]="'contact-container' + (inView() ? ' in-view' : '')" #contactSection >
+    <section id="contact" [class]="'contact-container' + (inView() ? ' in-view' : '')" #contactSection >
       <h2 class="contact-title">Get In Touch</h2>
       <div class="contact-grid">
         <!-- Send Message Form -->
@@ -96,7 +96,7 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
           }
         </div>
       </div>
-    </div>
+    </section>
   `,
   styles: [`
     .contact-section {

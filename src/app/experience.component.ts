@@ -19,7 +19,7 @@ interface ExperienceItem {
   },
   imports: [CommonModule],
   template: `
-    <div [class]="'experience-container' + (inView() ? ' in-view' : '')" #experienceSection>
+    <section id="experience" [class]="'experience-container' + (inView() ? ' in-view' : '')" #experienceSection>
       <h2 class="experience-title">Experience</h2>
       <div class="experience-content">
         @for (exp of experienceItems; track exp.company) {
@@ -52,7 +52,7 @@ interface ExperienceItem {
           </div>
         }
       </div>
-    </div>
+    </section>
   `,
   styles: [`
     .experience-section {

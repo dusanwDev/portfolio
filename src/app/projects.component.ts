@@ -22,7 +22,7 @@ interface Project {
   },
   imports: [NgFor, NgIf],
   template: `
-    <section [class]="'projects-section'" #projectsSection>
+    <section id="projects" [class]="'projects-section'" #projectsSection>
       <div [class]="'projects-label'">
         <h2>All Projects</h2>
       </div>
@@ -103,6 +103,7 @@ interface Project {
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       align-items: stretch;
       max-width: 1300px;
+      min-height: 420px;
       margin: 0 auto;
     }
     .project-card {

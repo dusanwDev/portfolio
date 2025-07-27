@@ -9,7 +9,7 @@ import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef, Afte
     'aria-label': 'About Me Section',
   },
   template: `
-    <section [class]="'about-me-section' + (inView() ? ' in-view' : '')" #aboutSection>
+    <section id="about" [class]="'about-me-section' + (inView() ? ' in-view' : '')" #aboutSection>
       <h2 [class]="'about-title'">
         <span [class]="'about-title-bracket'">&lt;</span>
         <span [class]="'about-title-gradient'">ABOUT_ME</span>

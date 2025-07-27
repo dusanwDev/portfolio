@@ -17,7 +17,7 @@ interface Skill {
   },
   imports: [CommonModule],
   template: `
-    <div class="skills-container" #skillSesction>
+    <section id="skills" class="skills-container" #skillSesction>
       <h2 class="skills-title">Skills & Technologies</h2>
       <div class="skills-grid">
         @for (skill of visibleSkills(); track skill.name; let i = $index) {
@@ -32,7 +32,7 @@ interface Skill {
           </div>
         }
       </div>
-    </div>
+    </section>
   `,
   styles: [`
     .skills-section {
