@@ -7,13 +7,21 @@
   font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
   
 }
-body {
-  background-color: #000000;
-  overflow-x: hidden;
 
+html, body {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 html {
   scroll-behavior: smooth;
+}
+body {
+  background-color: #000000;
+
 }
 .experience-container,.contact-container,.skills-container,.projects-section,.about-me-section {
   margin-top: 2rem;
@@ -21,4 +29,5 @@ html {
 
 section[id] {
   scroll-margin-top: 10px;
+  
 }

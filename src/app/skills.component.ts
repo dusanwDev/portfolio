@@ -37,7 +37,6 @@ interface Skill {
   styles: [`
     .skills-section {
       width: 100%;
-      background: #000;
       padding: 4rem 2rem;
       display: flex;
       justify-content: center;
@@ -51,7 +50,6 @@ interface Skill {
       flex-direction: column;
       align-items: center;
       gap: 1rem;
-      background-color: #000;
       padding: 1.0625rem 0 0 0;
     }
     .skills-title {

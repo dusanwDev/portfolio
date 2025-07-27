@@ -66,7 +66,6 @@ interface ExperienceItem {
     }
     .experience-container {
       width: 100%;
-      background-color: #000000;
       display: flex;
       flex-direction: column;
       align-items: center;

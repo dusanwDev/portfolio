@@ -64,17 +64,18 @@ function randomLeft(): number {
     </section>
   `,
   styles: [`
-    .landing-hero-container {
-      width: 100%;
-      min-height: calc(100vh - 80px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .landing-hero-container, .landing-hero {
+      width: 100vw;
+      min-height: 100vh;
       position: relative;
       overflow: hidden;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
+      background: #000;
+    }
+    .landing-hero-content {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
     }
     .bg-decor {
       position: absolute;

@@ -128,7 +128,6 @@ import { SupabaseService, ContactMessage } from './services/supabase.service';
       align-items: center;
       gap: 1rem;
       z-index: 1;
-      background-color: #000000;
       opacity: 0;
       transform: translateY(40px);
       transition: opacity 0.7s cubic-bezier(0.4,0,0.6,1), transform 0.7s cubic-bezier(0.4,0,0.6,1);

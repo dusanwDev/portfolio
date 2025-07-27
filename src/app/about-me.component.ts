@@ -24,7 +24,6 @@ import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef, Afte
   styles: [`
     .about-me-container {
       width: 100%;
-      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -34,7 +33,6 @@ import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef, Afte
     }
     .about-me-section {
       width: 100%;
-      background-color: #000;
 
       display: flex;
       flex-direction: column;

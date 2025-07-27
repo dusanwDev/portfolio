@@ -32,7 +32,28 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
             <a href="#contact" [class]="'nav-link'"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-icon lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> CONTACT</a>
           </li>
         </ul>
+        <!-- Menu button for mobile -->
+        @if (isMobile()) {
+          <button class="menu-btn" type="button" aria-label="Open menu" (click)="menuOpen.set(true)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu-icon lucide-menu"><path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6h16"/></svg>
+          </button>
+        }
       </nav>
+      <!-- Sidebar and backdrop for mobile menu -->
+      @if (menuOpen()) {
+        <div class="sidebar-backdrop" (click)="closeMenu()"></div>
+        <aside class="sidebar">
+          <button class="sidebar-close" aria-label="Close menu" (click)="closeMenu()">&times;</button>
+          <ul class="sidebar-list">
+            <li><a href="#home" (click)="closeMenu()">HOME</a></li>
+            <li><a href="#about" (click)="closeMenu()">ABOUT</a></li>
+            <li><a href="#projects" (click)="closeMenu()">PROJECTS</a></li>
+            <li><a href="#skills" (click)="closeMenu()">SKILLS</a></li>
+            <li><a href="#experience" (click)="closeMenu()">EXPERIENCE</a></li>
+            <li><a href="#contact" (click)="closeMenu()">CONTACT</a></li>
+          </ul>
+        </aside>
+      }
       <div [class]="'header-status'">
         <span [class]="'status-dot'" aria-label="Online"></span>
         <span [class]="'status-text'">ONLINE</span>
@@ -202,18 +223,96 @@ import { Component, ChangeDetectionStrategy, computed, signal, effect } from '@a
         padding: 0.5rem 0.5rem;
       }
       .header-nav {
-        margin: 0.5rem 0;
+        margin-left: auto;
+        justify-content: flex-end;
       }
+    }
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+      padding: 0.5rem;
+      z-index: 20;
+    }
+    @media (max-width: 900px) {
+      .menu-btn {
+        display: block;
+      }
+      .nav-list {
+        display: none;
+      }
+    }
+    .sidebar-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 80vw;
+      max-width: 320px;
+      height: 100vh;
+      background: #181b22;
+      box-shadow: -2px 0 16px 0 rgba(0,0,0,0.2);
+      z-index: 101;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      animation: sidebarSlideIn 0.3s cubic-bezier(0.4,0,0.6,1);
+    }
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      align-self: flex-end;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .sidebar-list a {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .sidebar-list a:hover {
+      color: #00c6ff;
+    }
+    @keyframes sidebarSlideIn {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(0); }
     }
   `]
 })
 export class HeaderComponent {
   private readonly now = signal(new Date());
+  menuOpen = signal(false);
 
   readonly time = computed(() => {
     const d = this.now();
     return d.toLocaleTimeString([], { hour12: false });
   });
+
+  isMobile(): boolean {
+    return window.innerWidth <= 900;
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
+  }
 
   constructor() {
     effect(() => {
