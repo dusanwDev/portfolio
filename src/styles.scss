@@ -18,3 +18,7 @@ html {
 .experience-container,.contact-container,.skills-container,.projects-section,.about-me-section {
   margin-top: 2rem;
 }
+
+section[id] {
+  scroll-margin-top: 10px;
+}
