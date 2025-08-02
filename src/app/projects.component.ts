@@ -88,7 +88,7 @@ interface Project {
       margin-bottom: 1rem;
       letter-spacing: 0.08em;
       font-weight: 900;
-      width: 100vw;
+      width: 100%;
     }
     .projects-label-arrow {
       color: #00eaff;
@@ -100,7 +100,7 @@ interface Project {
       width: 100%;
       display: grid;
       gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
       align-items: stretch;
       max-width: 1300px;
       min-height: 420px;
@@ -299,11 +299,12 @@ interface Project {
     }
     @media (max-width: 900px) {
       .projects-section {
-        max-width: 100vw;
+        max-width: 100%;
         padding: 0 0.5rem;
       }
       .projects-grid {
         gap: 1.2rem;
+        grid-template-columns: 1fr;
       }
       .project-card {
         padding: 1.2rem 0.7rem 1rem 0.7rem;

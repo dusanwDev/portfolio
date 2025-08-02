@@ -65,7 +65,7 @@ function randomLeft(): number {
   `,
   styles: [`
     .landing-hero-container, .landing-hero {
-      width: 100vw;
+      width: 100%;
       min-height: 100vh;
       position: relative;
       overflow: hidden;
@@ -80,7 +80,7 @@ function randomLeft(): number {
     .bg-decor {
       position: absolute;
       inset: 0;
-      width: 100vw;
+      width: 100%;
       height: 100%;
       z-index: 0;
       pointer-events: none;

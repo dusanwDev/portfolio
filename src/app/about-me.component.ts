@@ -30,6 +30,7 @@ import { Component, ChangeDetectionStrategy, signal, ViewChild, ElementRef, Afte
       justify-content: center;
       padding: 5rem 0 4rem 0;
       min-height: 60vh;
+      overflow: hidden;
     }
     .about-me-section {
       width: 100%;
