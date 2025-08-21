@@ -22,7 +22,7 @@ interface Project {
   },
   imports: [NgFor, NgIf],
   template: `
-    <section id="projects" [class]="'projects-section'" #projectsSection>
+    <section id="projects-section" [class]="'projects-section'" #projectsSection>
       <div [class]="'projects-label'">
         <h2>All Projects</h2>
       </div>

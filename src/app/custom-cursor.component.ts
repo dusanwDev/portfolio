@@ -14,7 +14,7 @@ import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/cor
     '[style.display]': '"block"',
   },
   template: `
-    <div [class]="'cursor-outer'" [style.transform]="'translate(' + (x() - 38) + 'px, ' + (y() - 38) + 'px)'">
+    <div [class]="'cursor-outer' + (isFocus() ? ' cursor-focus' : '')" [style.transform]="'translate(' + (x() - 38) + 'px, ' + (y() - 38) + 'px)'">
       <div [class]="'cursor-corner cursor-corner-tl'"></div>
       <div [class]="'cursor-corner cursor-corner-tr'"></div>
       <div [class]="'cursor-corner cursor-corner-bl'"></div>
@@ -92,10 +92,25 @@ import { Component, ChangeDetectionStrategy, signal, effect } from '@angular/cor
       border-top: none;
       border-bottom-right-radius: 6px;
     }
+    .cursor-outer.cursor-focus .cursor-ring {
+      width: 32px;
+      height: 32px;
+      border-width: 2.5px;
+      opacity: 0.35;
+      transition: width 0.18s, height 0.18s, opacity 0.18s;
+    }
+    .cursor-outer.cursor-focus .cursor-corner {
+      width: 8px;
+      height: 8px;
+      border-width: 2.5px;
+      opacity: 0.9;
+      transition: width 0.18s, height 0.18s, opacity 0.18s;
+    }
   `]
 })
 export class CustomCursorComponent {
   private readonly pos = signal({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  isFocus = signal(false);
 
   readonly x = () => this.pos().x;
   readonly y = () => this.pos().y;
@@ -107,6 +122,27 @@ export class CustomCursorComponent {
       };
       window.addEventListener('mousemove', move);
       return () => window.removeEventListener('mousemove', move);
+    });
+    // Focus effect for <a> and <button>
+    effect(() => {
+      const onOver = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('a,button')) {
+          this.isFocus.set(true);
+        }
+      };
+      const onOut = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('a,button')) {
+          this.isFocus.set(false);
+        }
+      };
+      window.addEventListener('mouseover', onOver);
+      window.addEventListener('mouseout', onOut);
+      return () => {
+        window.removeEventListener('mouseover', onOver);
+        window.removeEventListener('mouseout', onOut);
+      };
     });
   }
 } 

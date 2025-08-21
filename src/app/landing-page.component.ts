@@ -38,8 +38,11 @@ function randomLeft(): number {
         <ng-container *ngFor="let bin of binaries(); let i = index">
           <span [class]="'bg-binary'" [style.top]="bin.top + '%'" [style.left]="bin.left + '%'">{{ bin.value }}</span>
         </ng-container>
-        <ng-container *ngFor="let sq of squares; let i = index">
-          <div [class]="'bg-square'" [class.square-glow-on]="squareGlows[i]()" [style.top]="sq.top" [style.left]="sq.left"></div>
+        <ng-container *ngFor="let sq of dispersedSquares; let i = index">
+          <div [class]="'bg-square'" [style.top]="sq.top" [style.left]="sq.left"
+               [style.opacity]="squareGlows[i]() ? 0.15 : 0"
+               [style.transition]="'opacity 0.7s cubic-bezier(0.4,0,0.6,1)'"
+               [class.square-glow-on]="squareGlows[i]()"></div>
         </ng-container>
       </div>
       <h1 [class]="'hero-title'">
@@ -54,8 +57,8 @@ function randomLeft(): number {
         <span [class]="'tagline-highlight'">Building the future, one line of code at a time.</span>
       </p>
       <div [class]="'hero-actions'">
-        <button [class]="'hero-btn hero-btn-primary'" type="button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><polygon points="6 3 20 12 6 21 6 3"/></svg> VIEW PROJECTS
+        <button [class]="'hero-btn hero-btn-primary'" type="button" (click)="scrollToProjects()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><polygon points="6 3 20 12 6 21 6 3"/></svg> VIEW PROJECTS
         </button>
         <button [class]="'hero-btn hero-btn-outline'" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> DOWNLOAD CV
@@ -298,14 +301,33 @@ export class LandingPageComponent {
   readonly subtitleDone = signal(false); // New signal to track if typing is done
   private readonly cursorBlink = signal(true);
   readonly showCursor = signal(true); // Always show cursor, let the typing effect control its blinking/visibility
-  squareGlow = signal(true);
 
-  squares = [
-    { top: '10%', left: '20%' },
-    { top: '25%', left: '75%' },
-    { top: '60%', left: '15%' },
+  // Disperse 12 squares randomly across the landing page
+  dispersedSquares = [
+    { top: '8%', left: '12%' },
+    { top: '15%', left: '70%' },
+    { top: '22%', left: '40%' },
+    { top: '30%', left: '80%' },
+    { top: '38%', left: '25%' },
+    { top: '45%', left: '60%' },
+    { top: '52%', left: '15%' },
+    { top: '60%', left: '50%' },
+    { top: '68%', left: '75%' },
+    { top: '75%', left: '35%' },
+    { top: '82%', left: '55%' },
+    { top: '90%', left: '20%' },
   ];
-  squareGlows = this.squares.map(() => signal(true));
+
+  // Each square gets its own signal for independent animation
+  squareGlows = this.dispersedSquares.map(() => signal(Math.random() > 0.5));
+
+  // Add a method to scroll to projects
+  scrollToProjects() {
+    const el = document.getElementById('projects-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 
   constructor() {
     // Police light effect
@@ -377,13 +399,23 @@ export class LandingPageComponent {
       };
     });
 
-    // Neon square glow blink effect (independent for each square)
+    // Independent fade in/out for each square
     this.squareGlows.forEach((glow, i) => {
       effect(() => {
-        const interval = setInterval(() => {
-          glow.update(v => !v);
-        }, 1200 + Math.random() * 1200); // Each square blinks at a different interval
-        return () => clearInterval(interval);
+        // Randomize interval and initial delay for more organic effect
+        const min = 900, max = 2200;
+        const intervalTime = min + Math.random() * (max - min);
+        const initialDelay = Math.random() * intervalTime;
+        let interval: any;
+        const timeout = setTimeout(() => {
+          interval = setInterval(() => {
+            glow.update(v => !v);
+          }, intervalTime);
+        }, initialDelay);
+        return () => {
+          clearTimeout(timeout);
+          if (interval) clearInterval(interval);
+        };
       });
     });
   }
