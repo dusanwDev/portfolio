@@ -7,7 +7,6 @@ interface Project {
   image: string;
   badge: string;
   badgeType: 'LIVE' | 'ERP' | 'FRONTEND' | 'BACKEND';
-  tech: string[];
   codeUrl?: string;
   liveUrl?: string;
 }
@@ -42,13 +41,9 @@ interface Project {
           <div [class]="'project-title'">{{ project.title }}</div>
           <div [class]="'project-desc'">{{ project.description }}</div>
           <div [class]="'project-tech'">
-            <span *ngFor="let t of project.tech" [class]="'project-tech-item'">{{ t }}</span>
           </div>
           <div [class]="'project-actions'">
-            <a *ngIf="project.codeUrl" [href]="project.codeUrl" target="_blank" rel="noopener" [class]="'project-btn project-btn-code'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github-icon lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg> Code
-            </a>
-            <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" rel="noopener" [class]="'project-btn project-btn-live'">
+            <a  *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" rel="noopener" [class]="'project-btn project-btn-live'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link-icon lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg> Live Demo
             </a>
           </div>
@@ -286,6 +281,8 @@ interface Project {
       color: rgb(34, 211, 238);
       border: none;
       box-shadow: 0 2px 12px 0 #00eaff22;
+      cursor: pointer;
+      pointer-events: auto;
       
     }
     .project-btn-live:hover {
@@ -361,34 +358,31 @@ interface Project {
 export class ProjectsComponent implements AfterViewInit {
   projects: Project[] = [
     {
-      title: 'Gospel Admin System',
-      description: 'Comprehensive church management system with member tracking, event scheduling, financial management and attendance monitoring.',
-      image: 'https://dummyimage.com/600x200/222/fff&text=Gospel+Admin+System',
-      badge: 'LIVE',
-      badgeType: 'ERP',
-      tech: ['React JS', 'MySQL', 'HTML/CSS', '+2'],
-      codeUrl: '#',
-      liveUrl: '#',
-    },
-    {
-      title: 'GreenTech Solutions',
-      description: 'A modern web platform showcasing sustainable technology solutions, environmental services, and green innovation initiatives.',
-      image: 'https://dummyimage.com/600x200/def/222&text=GreenTech+Solutions',
+      title: 'Election Tracker',
+      description: 'Developed a practice project to strengthen understanding of core React concepts for building React applications.',
+      image: '../../../assets/images/electiontracker.png',
       badge: 'LIVE',
       badgeType: 'FRONTEND',
-      tech: ['HTML', 'HTML/CSS', 'JS'],
       codeUrl: '#',
-      liveUrl: '#',
+      liveUrl: 'https://stocksdemoproject.netlify.app/',
     },
     {
-      title: 'M-Pesa PHP SDK',
-      description: 'A comprehensive PHP SDK for integrating Safaricom\'s M-Pesa payment services, including STK Push, B2B, B2C, and more.',
-      image: 'https://dummyimage.com/600x200/222/fff&text=M-Pesa+PHP+SDK',
+      title: 'Stock market',
+      description: 'Built an Angular application to practice applying updates and new features from recent Angular releases.',
+      image: '../../../assets/images/stockmarket.png',
       badge: 'LIVE',
-      badgeType: 'BACKEND',
-      tech: ['PHP', 'REST API', 'Composer', '+1'],
+      badgeType: 'FRONTEND',
       codeUrl: '#',
-      liveUrl: '#',
+      liveUrl: 'https://stocksdemoproject.netlify.app/',
+    },
+    {
+      title: 'Aruna',
+      description: 'NextJs application built in order from me to grasp core nextjs conceptps and implement them in a project required by my employer.',
+      image: '../../../assets/images/aruna.png',
+      badge: 'LIVE',
+      badgeType: 'FRONTEND',
+      codeUrl: '#',
+      liveUrl: 'https://car-rental-nextjs-five.vercel.app/home',
     },
   ];
 
