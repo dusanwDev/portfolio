@@ -60,7 +60,7 @@ function randomLeft(): number {
         <button [class]="'hero-btn hero-btn-primary'" type="button" (click)="scrollToProjects()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><polygon points="6 3 20 12 6 21 6 3"/></svg> VIEW PROJECTS
         </button>
-        <button [class]="'hero-btn hero-btn-outline'" type="button">
+        <button [class]="'hero-btn hero-btn-outline'" type="button" (click)="downloadCV()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> DOWNLOAD CV
         </button>
       </div>
@@ -327,6 +327,17 @@ export class LandingPageComponent {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  }
+
+  // Add a method to download CV
+  downloadCV() {
+    const link = document.createElement('a');
+    link.href = 'assets/dusan-nikolic-cv.pdf';
+    link.download = 'Dusan Nikolic CV.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   constructor() {
