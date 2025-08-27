@@ -382,7 +382,7 @@ export class ProjectsComponent implements AfterViewInit {
       badge: 'LIVE',
       badgeType: 'FRONTEND',
       codeUrl: '#',
-      liveUrl: 'https://car-rental-nextjs-five.vercel.app/home',
+      liveUrl: 'https://arunahouserental.vercel.app/home',
     },
   ];
 
