@@ -364,7 +364,7 @@ export class ProjectsComponent implements AfterViewInit {
       badge: 'LIVE',
       badgeType: 'FRONTEND',
       codeUrl: '#',
-      liveUrl: 'https://stocksdemoproject.netlify.app/',
+      liveUrl: 'https://elctionstrackerdemo.netlify.app/',
     },
     {
       title: 'Stock market',
